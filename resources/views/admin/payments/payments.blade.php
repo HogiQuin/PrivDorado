@@ -3,14 +3,38 @@
 @section('content')
 <h1>Gestion de pagos</h1>
 
-<div class="row">
-    <div class="col-lg-3 col-sm-12">
-        <div class="form-group">
-            <label for="paymentDate">Fecha:</label>
-            <input type="date" class="form-control" id="datePayments" name="date">
+<form action="{{ url('/admin/payments/') }}" method="GET">
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                <label for="paymentDate">Mes:</label>
+                <select name="month" id="month" class="form-control">
+                    <option value="1" {{ $ene }} >Enero</option>
+                    <option value="2" {{ $feb }} >Febrero</option>
+                    <option value="3" {{ $mar }} >Marzo</option>
+                    <option value="4" {{ $abr }} >Abril</option>
+                    <option value="5" {{ $may }} >Mayo</option>
+                    <option value="6" {{ $jun }} >Junio</option>
+                    <option value="7" {{ $jul }} >Julio</option>
+                    <option value="8" {{ $ago }} >Agosto</option>
+                    <option value="9" {{ $sep }} >Septiembre</option>
+                    <option value="10" {{ $oct }} >Octubre</option>
+                    <option value="11" {{ $nov }} >Noviembre</option>
+                    <option value="12" {{ $dec }} >Diciembre</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-12">
+            <div class="form-group">
+                <label for="paymentDate"> &nbsp;</label>
+                <button class="btn btn-primary btn-block">
+                    <i class="fas fa-search fa-sm text-white-50"></i>
+                    Filtrar
+                </button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 @if(session()->has('message') && session()->has('status'))
 <div class="row">

@@ -15,6 +15,7 @@ class CreateMonthsTable extends Migration
     {
         Schema::create('months', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('number');
             $table->string('name', 50);
             $table->integer('year');
             $table->timestamps();

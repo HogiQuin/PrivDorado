@@ -16,6 +16,10 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->decimal('amount', 10, 2);
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users');
             $table->unsignedInteger('month_id');
             $table->foreign('month_id')
                     ->references('id')

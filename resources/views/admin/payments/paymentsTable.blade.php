@@ -16,7 +16,7 @@
                             <th>Tipo</th>
                             <th>Estatus</th>
                             <th>File</th>
-                            <th>Action</th>
+                            <th>Accion</th>
                         </tr>
                     </thead>
                     <tbody>

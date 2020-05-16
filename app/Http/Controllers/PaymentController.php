@@ -64,9 +64,23 @@ class PaymentController extends Controller
         
     }
 
-    public function adminPayments()
+    public function adminPayments(Request $request)
     {
-        $payments = Payment::whereMonth('created_at', '=', '5')->get();
+        $month = isset( $request['month'] ) ?  $request['month']  : (int)date('m');
+        $payments = Payment::whereMonth('created_at', '=', $month)->get();
+        $ene = $month == 1 ? 'selected' : null;
+        $feb = $month == 2 ? 'selected' : null;
+        $mar = $month == 3 ? 'selected' : null;
+        $abr = $month == 4 ? 'selected' : null;
+        $may = $month == 5 ? 'selected' : null;
+        $jun = $month == 6 ? 'selected' : null;
+        $jul = $month == 7 ? 'selected' : null;
+        $ago = $month == 8 ? 'selected' : null;
+        $sep = $month == 9 ? 'selected' : null;
+        $oct = $month == 10 ? 'selected' : null;
+        $nov = $month == 11 ? 'selected' : null;
+        $dec = $month == 12 ? 'selected' : null;
+        
 
         $pArray = array();
 
@@ -92,24 +106,56 @@ class PaymentController extends Controller
             array_push($pArray, $pObject);
         }
 
-        return view('admin.payments.payments')->with(['payments' => $pArray]);
+        return view('admin.payments.payments')->with([
+            'payments' => $pArray,
+            'ene' => $ene,
+            'feb' => $feb,
+            'mar' => $mar,
+            'abr' => $abr,
+            'may' => $may,
+            'jun' => $jun,
+            'jul' => $jul,
+            'ago' => $ago,
+            'sep' => $sep,
+            'oct' => $oct,
+            'nov' => $nov,
+            'dec' => $dec,
+        ]);
     }
 
     public function approvePayment(Request $request) 
     {
         $payment = Payment::find($request['payment_id']);
         $status = PaymentStatus::where('name', '=', 'A')->first();
-
+        $error = false;
+        
         $payment->payment_status_id = $status->id;
         $payment->authorized_by = auth()->user()->id;
+
+        if($payment->paymentType()->name == 'PMM') 
+        {
+            $error = $payment->createTransactions();
+        }
+        else 
+        {
+            $error = true;
+        }
 
         if($payment->save()) {
 
             
-
-            return redirect('/admin/payments/')
-                    ->with('status', 0)
-                    ->with('message', 'El pago se aprovo correctamente');
+            if($error)
+            {
+                return redirect('/admin/payments/')
+                ->with('status', 0)
+                ->with('message', 'El pago se aprovo correctamente');
+            }
+            else 
+            {
+                return redirect('/admin/payments/')
+                ->with('status', 0)
+                ->with('message', 'El pago se aprovo correctamente, pero hubo un problema, por favor contacta al administrador');
+            }
         } else {
 
             return redirect('/admin/payments/')
